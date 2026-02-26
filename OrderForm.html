@@ -1,0 +1,307 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Toro Tines & Bedknives Order Form</title>
+  <style>
+    :root { --accent:#cd2027; --bg:#f6f8fb; --text:#1f2937; --muted:#6b7280; --border:#e5e7eb; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; color:var(--text); background:var(--bg); }
+    .wrap { max-width: 960px; margin: 24px auto; padding: 16px; }
+    .card { background:#fff; border:1px solid var(--border); border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.06); overflow:hidden; }
+    header { background:#cd2027; color:#fff; padding:24px; }
+    header h1 { margin:0 0 6px 0; font-size: 1.5rem; }
+    header p { margin:0; opacity:0.9; }
+    .section { padding: 20px 24px; }
+    .section + .section { border-top:1px solid var(--border); }
+    .grid { display:grid; grid-template-columns: 1fr; gap:12px; }
+    @media (min-width: 640px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+    label { font-weight: 600; font-size: 0.95rem; }
+    .field { display:flex; flex-direction: column; gap:6px; }
+    input[type="text"], input[type="email"], input[type="number"], input[type="date"], input[type="tel"] {
+      padding:12px 12px; border:1px solid var(--border); border-radius:8px; font-size:1rem;
+    }
+    input[type="number"] { width: 120px; }
+    table { width:100%; border-collapse: collapse; }
+    thead th { text-align:left; font-size:0.9rem; color:var(--muted); padding:10px 8px; border-bottom:1px solid var(--border); position: sticky; top: 0; background:#fff; }
+    tbody td { padding:10px 8px; border-bottom:1px solid var(--border); vertical-align: middle; }
+    tbody tr:hover { background:#fafafa; }
+    .right { text-align:right; }
+    .muted { color:var(--muted); font-size:0.9rem; }
+    .btnbar { display:flex; gap:10px; }
+    button { appearance:none; border:none; border-radius:10px; padding:12px 16px; font-weight:700; cursor:pointer; font-size:1rem; }
+    .primary { background: var(--accent); color:#fff; }
+    .error { background:#fef2f2; border:1px solid #fecaca; color:#991b1b; padding:10px 12px; border-radius:8px; display:none; }
+    footer { padding:16px 24px; color:var(--muted); font-size:0.85rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <h1>Toro Tines & Bedknives Order Form</h1>
+        <p>Enter your details and quantities. Prices calculate automatically.</p>
+      </header>
+
+      <div class="section">
+        <div class="grid grid-2">
+          <div class="field">
+            <label for="custName">Name<span class="muted"> *</span></label>
+            <input id="custName" type="text" placeholder="Jane Smith" required>
+          </div>
+          <div class="field">
+            <label for="email">Email<span class="muted"> *</span></label>
+            <input id="email" type="email" placeholder="name@example.com" required>
+          </div>
+          <div class="field">
+            <label for="phone">Phone (AU mobile)<span class="muted"> *</span></label>
+            <input id="phone" type="tel" placeholder="0412 345 678" required
+                   pattern="^(0\s?4\s?\d{2}\s?\d{3}\s?\d{3}|\+61\s?4\s?\d{2}\s?\d{3}\s?\d{3})$"
+                   title="Enter an AU mobile e.g. 0412 345 678 or +61 412 345 678">
+          </div>
+          <div class="field">
+            <label for="company">Company<span class="muted"> *</span></label>
+            <input id="company" type="text" placeholder="Company Pty Ltd" required>
+          </div>
+          <div class="field">
+            <label for="orderNo">Order #<span class="muted"> *</span></label>
+            <input id="orderNo" type="text" placeholder="e.g. PO-12345" required>
+          </div>
+          <div class="field">
+            <label for="accountNo">Account #<span class="muted"> *</span></label>
+            <input id="accountNo" type="text" placeholder="e.g. 001234" required>
+          </div>
+          <div class="field">
+            <label for="deliveryDate">Preferred delivery date</label>
+            <input id="deliveryDate" type="date">
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 style="margin:0 0 8px 0; font-size:1.2rem;">Tines</h2>
+        <div class="muted" style="margin-bottom:10px;">Enter quantities as whole numbers.</div>
+        <div class="error" id="tinesError">Please enter a valid whole number for quantity.</div>
+        <div style="overflow:auto; max-height: 400px;">
+          <table aria-label="Tines">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Description</th>
+                <th class="right">Unit Price</th>
+                <th>Qty</th>
+                <th class="right">Line Total</th>
+              </tr>
+            </thead>
+            <tbody id="tinesBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 style="margin:0 0 8px 0; font-size:1.2rem;">Bedknives</h2>
+        <div class="muted" style="margin-bottom:10px;">Enter quantities as whole numbers.</div>
+        <div class="error" id="bedError">Please enter a valid whole number for quantity.</div>
+        <div style="overflow:auto; max-height: 400px;">
+          <table aria-label="Bedknives">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Description</th>
+                <th class="right">Unit Price</th>
+                <th>Qty</th>
+                <th class="right">Line Total</th>
+              </tr>
+            </thead>
+            <tbody id="bedsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <table>
+          <tbody>
+            <tr>
+              <td class="right" style="width:80%; font-weight:600;">Subtotal</td>
+              <td class="right" id="subtotal">$0.00</td>
+            </tr>
+            <tr>
+              <td class="right" style="font-weight:600;">GST (10%)</td>
+              <td class="right" id="gst">$0.00</td>
+            </tr>
+            <tr class="total-row">
+              <td class="right" style="font-size:1.1rem; font-weight:700;">Total (incl. GST)</td>
+              <td class="right" id="grandTotal" style="font-size:1.1rem; font-weight:700;">$0.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <div class="btnbar">
+          <button class="primary" id="emailBtn">Email Order</button>
+        </div>
+        <p class="muted" style="margin-top:10px;">A copy of your order email will also be addressed to you.</p>
+      </div>
+
+      <footer>
+        <div id="validationMsg" class="error">Please complete all required details (Name, Email, Phone, Company, Order #, Account #) and enter at least one quantity &gt; 0.</div>
+        <p>Questions? Contact us at <span id="orderEmailDisplay2"></span>.</p>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    const ORDER_EMAIL = "au.parts@toro.com";
+    const currencyFmt = new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' });
+
+    const skuCatalog = [
+      { group: 'Tines', sku: '108-9168', desc: 'Hardened Tine 1001', price: 21.60 },
+      { group: 'Tines', sku: '108-9245', desc: 'Hardened Tine 1002', price: 18.33 },
+      { group: 'Tines', sku: '108-9213', desc: 'Hardened Tine 1003', price: 19.93 },
+      { group: 'Tines', sku: '108-9236', desc: 'Hardened Tine 1003', price: 15.13 },
+      { group: 'Tines', sku: '108-9214', desc: 'Hardened Tine 1003', price: 20.01 },
+      { group: 'Tines', sku: '100-3621', desc: 'Hardened Tine 1003', price: 13.66 },
+      { group: 'Tines', sku: '137-6529', desc: 'Hardened Tine 1003', price: 26.67 },
+      { group: 'Tines', sku: '108-9261', desc: 'Hardened Tine 1003', price: 22.54 },
+      { group: 'Tines', sku: '108-9184', desc: 'Hardened Tine 1003', price: 52.90 },
+      { group: 'Tines', sku: '104-9875', desc: 'Hardened Tine 1003', price: 16.11 },
+      { group: 'Bedknives', sku: '93-4263', desc: 'Bedknife 2001', price: 106.82 },
+      { group: 'Bedknives', sku: '147-1245', desc: 'Bedknife 2002', price: 131.64 },
+      { group: 'Bedknives', sku: '93-4262', desc: 'Bedknife 2002', price: 86.93 },
+      { group: 'Bedknives', sku: '147-1249', desc: 'Bedknife 2002', price: 173.58 },
+      { group: 'Bedknives', sku: '115-1880', desc: 'Bedknife 2002', price: 195.73 },
+      { group: 'Bedknives', sku: '93-4264', desc: 'Bedknife 2002', price: 91.65 },
+      { group: 'Bedknives', sku: '115-1881', desc: 'Bedknife 2002', price: 195.73 },
+      { group: 'Bedknives', sku: '137-6094', desc: 'Bedknife 2002', price: 91.65 },
+      { group: 'Bedknives', sku: '147-1244', desc: 'Bedknife 2003', price: 195.73 }
+    ];
+
+    const GST_RATE = 0.10;
+    const tinesBody = document.getElementById('tinesBody');
+    const bedsBody = document.getElementById('bedsBody');
+    const summaryState = {}; // sku -> {price, qty, desc, group}
+
+    function createRow(item){
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${item.sku}</td>
+        <td>${item.desc}</td>
+        <td class="right">${currencyFmt.format(item.price)}</td>
+        <td><input type="number" min="0" step="1" inputmode="numeric" placeholder="0" aria-label="Quantity for ${item.sku}"></td>
+        <td class="right" data-line>${currencyFmt.format(0)}</td>`;
+      summaryState[item.sku] = { price:item.price, qty:0, desc:item.desc, group:item.group };
+      const qtyInput = tr.querySelector('input');
+      const lineTd = tr.querySelector('[data-line]');
+      qtyInput.addEventListener('input', ()=>{
+        const val = qtyInput.value.trim();
+        let qty = 0;
+        if (val === '') qty = 0;
+        else if (/^\d+$/.test(val)) qty = parseInt(val, 10);
+        else return; // ignore non-integers
+        summaryState[item.sku].qty = qty;
+        lineTd.textContent = currencyFmt.format(qty * item.price);
+        recalcTotals();
+      });
+      return tr;
+    }
+
+    function renderTables(){ tinesBody.innerHTML=''; bedsBody.innerHTML=''; skuCatalog.forEach(item=>{ const row=createRow(item); (item.group==='Tines'?tinesBody:bedsBody).appendChild(row); }); }
+
+    const subtotalEl = document.getElementById('subtotal');
+    const gstEl = document.getElementById('gst');
+    const grandEl = document.getElementById('grandTotal');
+    function recalcTotals(){
+      let subtotal = 0; Object.values(summaryState).forEach(it=>{ subtotal += (it.qty||0) * it.price; });
+      const gst = subtotal * GST_RATE; const grand = subtotal + gst;
+      subtotalEl.textContent = currencyFmt.format(subtotal);
+      gstEl.textContent = currencyFmt.format(gst);
+      grandEl.textContent = currencyFmt.format(grand);
+    }
+
+    // Build a clean plain-text items list (works across all mailto clients)
+    function buildItemsText(){
+      const lines = [];
+      lines.push('Product Code | Description | Qty | Unit | Line');
+      let any = false;
+      Object.entries(summaryState).forEach(([sku, it])=>{
+        if (it.qty && it.qty > 0){
+          any = true;
+          lines.push(`${sku} | ${it.desc} | ${it.qty} | ${currencyFmt.format(it.price)} | ${currencyFmt.format(it.qty * it.price)}`);
+        }
+      });
+      if (!any) lines.push('(no quantities entered)');
+      return lines.join('\n');
+    }
+
+    function buildSummaryText(){
+      const name = document.getElementById('custName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const company = document.getElementById('company').value.trim();
+      const orderNo = document.getElementById('orderNo').value.trim();
+      const accountNo = document.getElementById('accountNo').value.trim();
+      const deliveryDate = document.getElementById('deliveryDate').value;
+      const out = [];
+      out.push('Promotion Order');
+      out.push('----------------');
+      out.push(`Name: ${name}`);
+      out.push(`Email: ${email}`);
+      out.push(`Phone: ${phone}`);
+      out.push(`Company: ${company}`);
+      out.push(`Order #: ${orderNo}`);
+      out.push(`Account #: ${accountNo}`);
+      if (deliveryDate) out.push(`Preferred delivery: ${deliveryDate}`);
+      out.push('');
+      out.push(buildItemsText());
+      out.push('');
+      out.push(`Subtotal: ${subtotalEl.textContent}`);
+      out.push(`GST: ${gstEl.textContent}`);
+      out.push(`Total: ${grandEl.textContent}`);
+      out.push('');
+      out.push('Thank you.');
+      return out.join('\n');
+    }
+
+    const AU_MOBILE_RE = /^(?:0\s?4\s?\d{2}\s?\d{3}\s?\d{3}|\+61\s?4\s?\d{2}\s?\d{3}\s?\d{3})$/;
+
+    function validateForm(){
+      hideValidation();
+      const name = document.getElementById('custName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const company = document.getElementById('company').value.trim();
+      const orderNo = document.getElementById('orderNo').value.trim();
+      const accountNo = document.getElementById('accountNo').value.trim();
+      const validEmail = /^\S+@\S+\.\S+$/.test(email);
+      const validPhone = AU_MOBILE_RE.test(phone);
+      const hasQty = Object.values(summaryState).some(it => (it.qty||0) > 0);
+      if (!name || !company || !validEmail || !validPhone || !orderNo || !accountNo || !hasQty){ showValidation(); return false; }
+      return true;
+    }
+
+    function showValidation(){ document.getElementById('validationMsg').style.display='block'; }
+    function hideValidation(){ document.getElementById('validationMsg').style.display='none'; }
+
+    function emailOrder(){
+      if(!validateForm()) return;
+      const company = document.getElementById('company').value.trim();
+      const orderNo = document.getElementById('orderNo').value.trim();
+      const customerEmail = document.getElementById('email').value.trim();
+      const subject = (orderNo && company) ? `Order ${orderNo} – ${company}` : (company?`Order – ${company}`:'Order');
+      const body = buildSummaryText();
+      const cc = customerEmail ? `&cc=${encodeURIComponent(customerEmail)}` : '';
+      const mailto = `mailto:${encodeURIComponent(ORDER_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}${cc}`;
+      window.location.href = mailto;
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.getElementById('orderEmailDisplay2').textContent = ORDER_EMAIL;
+      renderTables();
+      recalcTotals();
+      document.getElementById('emailBtn').addEventListener('click', emailOrder);
+    });
+  </script>
+</body>
+</html>
